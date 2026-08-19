@@ -128,24 +128,25 @@ def load_market_data(refresh: bool = False) -> tuple[pd.DataFrame, pd.DataFrame,
 # ---------------------------------------------------------------------------
 def pe_percentile_series(pe_df: pd.DataFrame, dates: np.ndarray,
                          lookback_years: int = 10) -> np.ndarray:
-    """计算每个日期 PE 的滚动 lookback_years 年分位数 (0~1, 向量化)。"""
-    pe_arr = pe_df["pe_ttm"].to_numpy()
-    pe_dates = pe_df["date"].to_numpy()
-    start_cut = pd.Timestamp(dates[0]) - pd.Timedelta(days=365)
-    # 预切片减小搜索范围
-    mask0 = pe_dates >= np.datetime64(start_cut)
-    pe_sub, dates_sub = pe_arr[mask0], pe_dates[mask0]
-    idx = np.searchsorted(dates_sub, dates, side="right") - 1
-    idx = np.clip(idx, 0, len(pe_sub) - 1)
-    cur_pe = pe_sub[idx]
+    """计算每个日期 PE 的滚动 lookback_years 年分位数 (0~1)。
 
+    逐日实现与 backtest/hmm_transformer/valuation.py 语义完全一致:
+      窗口 = (d - lookback_years, d] 闭区间, 至少 60 条, 分位 = mean(PETTM <= 当天PETTM)。
+    """
+    pe_arr = pe_df["pe_ttm"].to_numpy(dtype=np.float64)
+    pe_dates = pe_df["date"].to_numpy()                       # datetime64[ns]
+    span_ns = np.timedelta64(int(lookback_years * 365.25) * 24 * 3600, "s").astype("timedelta64[ns]")
     out = np.full(len(dates), 0.5, dtype=np.float64)
     for i, d in enumerate(dates):
-        start = np.datetime64(d) - np.timedelta64(int(lookback_years * 365.25), "D")
-        w = (dates_sub > start) & (dates_sub <= d)
-        if w.sum() < 60:
+        d64 = np.datetime64(pd.Timestamp(d), "ns")
+        start = d64 - span_ns
+        i0 = np.searchsorted(pe_dates, start, side="right")   # 严格 > start
+        i1 = np.searchsorted(pe_dates, d64, side="right")     # 含当天 <= d
+        if i1 - i0 < 60:
             continue
-        out[i] = float(np.mean(pe_sub[w] <= cur_pe[i]))
+        win = pe_arr[i0:i1]
+        cur = pe_arr[i1 - 1]                                  # 窗口最后一天 = 当天 PE
+        out[i] = float(np.mean(win <= cur))
     return out
 
 
