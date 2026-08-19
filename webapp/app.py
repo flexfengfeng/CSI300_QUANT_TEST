@@ -32,10 +32,10 @@ except ImportError:
 import strategy as stg
 
 st.set_page_config(
-    page_title="风险平价 · CSI300 仪表盘",
+    page_title="股债风险平价助手",
     page_icon="📊",
-    layout="wide",
-    initial_sidebar_state="expanded",
+    layout="centered",
+    initial_sidebar_state="collapsed",
 )
 
 
@@ -161,6 +161,30 @@ def metric_card(st, label, value, delta=None, color: str | None = None,
 
 
 def main():
+    # ---- 移动端响应式: 窄屏(<768px)时所有多列布局堆叠为单列 ----
+    st.markdown(
+        """
+        <style>
+        @media (max-width: 767px) {
+          /* 让 st.columns 的内部 flex 容器纵向排列, 每列占满整行 */
+          div[data-testid="column"] {
+            width: 100% !important;
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+          }
+          div[data-testid="stHorizontalBlock"] {
+            flex-wrap: wrap;
+          }
+          /* 指标卡片字号微调, 手机更易读 */
+          div[data-testid="stMetricValue"] {
+            font-size: 1.3rem;
+          }
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     st.title("📊 风险平价 + 资产轮动 | 沪深300 网页版")
     st.caption("波动率目标 × PE 估值锚定 × 国债轮动 —— 不再预测涨跌，只做确定性配置")
 
