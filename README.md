@@ -40,8 +40,51 @@ streamlit run app.py   # http://localhost:8501
 
 **部署 Streamlit Community Cloud：**
 1. https://share.streamlit.io → GitHub 登录
-2. New app → 仓库 `flexfengfeng/moomoo` → Branch=`main` → Main file path=`webapp/app.py`
+2. New app → 仓库 `flexfengfeng/CSI300_QUANT_TEST` → Branch=`main` → Main file path=`webapp/app.py`
 3. Deploy → 获得公开链接
+
+## 🔄 数据更新机制
+
+**每日自动更新（GitHub Actions）**：`.github/workflows/update_data.yml`
+- 每个交易日 **16:15（北京时间）** 自动运行：抓取沪深300 + 国债ETF 最新日线 → 同步到 `webapp/data/` → 自动 commit+push → Streamlit Cloud 自动重新部署
+- 也可**手动触发**：GitHub 仓库 → **Actions** → `Update Market Data` → **Run workflow**（`workflow_dispatch`）
+- 数据无变化时（节假日/已最新）自动跳过提交，不产生空 commit
+
+**网页版可选联网刷新**：打开页面侧边栏的"尝试刷新最新行情"复选框，可在会话内临时补齐最近交易日数据（不写入仓库）。
+
+## ⚠️ 边界说明（重要）
+
+| 项 | 状态 | 说明 |
+|---|---|---|
+| 沪深300 / 国债ETF 日线 | ✅ 每日自动更新 | 腾讯财经接口，依赖仅 `requests`，CI 稳定 |
+| PE_TTM 估值数据 | ⚠️ **需手动更新** | legulegu 接口需 `akshare` + `py_mini_racer`，未纳入 CI。PE 变化慢，建议**每月**手工刷新一次（见下） |
+| 联网刷新失败 | ✅ 自动降级 | 页面勾选联网刷新时若不成功，自动回退使用仓库内置底库 |
+| 历史数据完整性 | ✅ 覆盖全 | 沪深300(2006~)、国债ETF(2013~)、PE(2005~) |
+
+## 🛠️ 需要手动操作的部分
+
+1. **每月：刷新 PE_TTM 底库**
+   ```bash
+   # 本地执行 (需 akshare + py_mini_racer)
+   python backtest/fetch_pe.py
+   cp backtest/csi300_pe_ttm.csv webapp/data/csi300_pe_ttm.csv
+   git add webapp/data/csi300_pe_ttm.csv
+   git commit -m "chore(data): refresh PE_TTM [$(date +%Y-%m)]"
+   git push
+   ```
+   push 后 Streamlit Cloud 自动重新部署。
+
+2. **按需：手动触发每日数据更新**
+   GitHub 仓库 → **Actions** → `Update Market Data` → **Run workflow**（数据文件缺失或想立即更新时）
+
+3. **首次部署 Streamlit**：见上方"部署 Streamlit Community Cloud"步骤（一次性）
+
+4. **本地跑回测/压力测试**（可选）：
+   ```bash
+   cd backtest
+   python run_riskparity.py --plot        # 回测
+   python stress_test_riskparity.py       # 压力测试
+   ```
 
 ## 📁 目录结构
 
