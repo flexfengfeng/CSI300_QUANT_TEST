@@ -1,0 +1,56 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.so
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== Jupyter Notebook (研究草稿, 不上传) =====
+*.ipynb
+
+# ===== 系统 / 编辑器 =====
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# ===== Streamlit / 运行时 =====
+.streamlit/
+*.log
+nohup.out
+
+# ===== backtest 行情数据缓存 (可用 fetch_*.py 重新拉取) =====
+backtest/daily_*.csv
+backtest/hk_*_1m.csv
+backtest/*_pe_ttm.csv
+backtest/*_cache.json
+backtest/rolling_fin_cache.json
+backtest/us_annual_fin_cache.json
+backtest/financial_cache.json
+
+# ===== backtest 回测产物 (报告/图/明细/结果) =====
+backtest/*_daily.csv
+backtest/*_report.txt
+backtest/*_equity.png
+backtest/*_equity.csv
+backtest/equity_curve.*
+backtest/metrics.csv
+backtest/trades.csv
+backtest/fills.csv
+backtest/*_result.csv
+backtest/*_top10.csv
+backtest/*_reviews.csv
+backtest/buffett_screen_result.csv
+backtest/*.html
+backtest/*_dashboard.html
+
+# ===== 确保 webapp 数据底库保留 (Streamlit Cloud 部署必需) =====
+!webapp/
+!webapp/data/
+!webapp/data/*.csv

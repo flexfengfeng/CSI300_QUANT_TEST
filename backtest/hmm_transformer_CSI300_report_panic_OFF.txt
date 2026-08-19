@@ -1,0 +1,75 @@
+===== HMM + Transformer WalkForward 回测报告 | CSI300 =====
+回测区间: 2012-12-27 ~ 2026-08-17 (3310 日, 13.1 年)
+耗时: 338 秒
+
+---- 策略 ----
+  cagr: 0.0496
+  total_return: 0.8876
+  mdd: -0.4306
+  sharpe: 0.2435
+  sortino: 0.2975
+  ann_vol: 0.1986
+  胜率: 0.5133
+  平均仓位: 0.8506
+  平均换手(日): 0.0131
+  超额收益: -0.0236
+
+---- 基准 (买入持有) ----
+  cagr: 0.05146431922912598
+  total_return: 0.9332
+  mdd: -0.4670
+  sharpe: 0.2332
+  sortino: 0.2937
+  ann_vol: 0.2152
+
+---- 每折指标 ----
+  Fold 1: val_acc=0.472 val_ic=0.004 test_ret_sum=-0.1078 test_acc=0.536
+  Fold 2: val_acc=0.524 val_ic=0.056 test_ret_sum=-0.1033 test_acc=0.508
+  Fold 3: val_acc=0.528 val_ic=0.035 test_ret_sum=-0.0321 test_acc=0.544
+  Fold 4: val_acc=0.500 val_ic=0.021 test_ret_sum=-0.0003 test_acc=0.512
+  Fold 5: val_acc=0.484 val_ic=-0.006 test_ret_sum=0.4267 test_acc=0.567
+  Fold 6: val_acc=0.536 val_ic=0.067 test_ret_sum=0.6387 test_acc=0.500
+  Fold 7: val_acc=0.472 val_ic=-0.090 test_ret_sum=0.4965 test_acc=0.508
+  Fold 8: val_acc=0.504 val_ic=0.037 test_ret_sum=0.5047 test_acc=0.504
+  Fold 9: val_acc=0.528 val_ic=0.007 test_ret_sum=-0.0689 test_acc=0.508
+  Fold 10: val_acc=0.556 val_ic=0.077 test_ret_sum=-0.2514 test_acc=0.500
+  Fold 11: val_acc=0.512 val_ic=0.039 test_ret_sum=-0.0592 test_acc=0.444
+  Fold 12: val_acc=0.563 val_ic=0.091 test_ret_sum=-0.1197 test_acc=0.524
+  Fold 13: val_acc=0.512 val_ic=-0.019 test_ret_sum=0.1210 test_acc=0.440
+  Fold 14: val_acc=0.548 val_ic=0.162 test_ret_sum=0.0998 test_acc=0.488
+  Fold 15: val_acc=0.500 val_ic=0.093 test_ret_sum=0.0983 test_acc=0.484
+  Fold 16: val_acc=0.464 val_ic=-0.087 test_ret_sum=0.1080 test_acc=0.508
+  Fold 17: val_acc=0.472 val_ic=-0.027 test_ret_sum=0.1346 test_acc=0.460
+  Fold 18: val_acc=0.500 val_ic=0.017 test_ret_sum=0.0645 test_acc=0.448
+  Fold 19: val_acc=0.500 val_ic=-0.046 test_ret_sum=-0.1369 test_acc=0.540
+  Fold 20: val_acc=0.504 val_ic=-0.027 test_ret_sum=-0.2007 test_acc=0.528
+  Fold 21: val_acc=0.504 val_ic=0.048 test_ret_sum=-0.0451 test_acc=0.512
+  Fold 22: val_acc=0.536 val_ic=0.010 test_ret_sum=-0.0070 test_acc=0.492
+  Fold 23: val_acc=0.528 val_ic=0.133 test_ret_sum=0.1319 test_acc=0.524
+  Fold 24: val_acc=0.512 val_ic=0.048 test_ret_sum=0.1923 test_acc=0.516
+  Fold 25: val_acc=0.516 val_ic=0.015 test_ret_sum=-0.0571 test_acc=0.480
+  Fold 26: val_acc=0.512 val_ic=-0.006 test_ret_sum=0.1625 test_acc=0.456
+  Fold 27: val_acc=0.444 val_ic=-0.085 test_ret_sum=0.1664 test_acc=0.437
+  Fold 28: val_acc=0.552 val_ic=0.104 test_ret_sum=0.2328 test_acc=0.500
+  Fold 29: val_acc=0.480 val_ic=-0.046 test_ret_sum=0.2148 test_acc=0.484
+  Fold 30: val_acc=0.464 val_ic=-0.004 test_ret_sum=0.0380 test_acc=0.456
+  Fold 31: val_acc=0.579 val_ic=0.118 test_ret_sum=0.0048 test_acc=0.500
+  Fold 32: val_acc=0.524 val_ic=0.025 test_ret_sum=-0.1179 test_acc=0.460
+  Fold 33: val_acc=0.548 val_ic=0.053 test_ret_sum=-0.1351 test_acc=0.528
+  Fold 34: val_acc=0.552 val_ic=-0.010 test_ret_sum=-0.1527 test_acc=0.500
+  Fold 35: val_acc=0.512 val_ic=-0.036 test_ret_sum=-0.1883 test_acc=0.556
+  Fold 36: val_acc=0.512 val_ic=0.059 test_ret_sum=-0.0732 test_acc=0.472
+  Fold 37: val_acc=0.496 val_ic=-0.073 test_ret_sum=-0.0038 test_acc=0.464
+  Fold 38: val_acc=0.456 val_ic=-0.078 test_ret_sum=-0.0337 test_acc=0.567
+  Fold 39: val_acc=0.492 val_ic=-0.014 test_ret_sum=-0.0309 test_acc=0.480
+  Fold 40: val_acc=0.496 val_ic=-0.042 test_ret_sum=-0.1327 test_acc=0.552
+  Fold 41: val_acc=0.512 val_ic=0.021 test_ret_sum=-0.0730 test_acc=0.583
+  Fold 42: val_acc=0.504 val_ic=-0.001 test_ret_sum=-0.1188 test_acc=0.528
+  Fold 43: val_acc=0.476 val_ic=0.040 test_ret_sum=0.0810 test_acc=0.496
+  Fold 44: val_acc=0.512 val_ic=0.033 test_ret_sum=0.0947 test_acc=0.556
+  Fold 45: val_acc=0.504 val_ic=0.036 test_ret_sum=0.0791 test_acc=0.508
+  Fold 46: val_acc=0.492 val_ic=-0.005 test_ret_sum=0.2774 test_acc=0.500
+  Fold 47: val_acc=0.544 val_ic=0.071 test_ret_sum=0.1352 test_acc=0.520
+  Fold 48: val_acc=0.488 val_ic=-0.080 test_ret_sum=0.1295 test_acc=0.484
+  Fold 49: val_acc=0.500 val_ic=0.011 test_ret_sum=0.2134 test_acc=0.560
+  Fold 50: val_acc=0.496 val_ic=0.029 test_ret_sum=0.0386 test_acc=0.516
