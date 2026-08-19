@@ -17,7 +17,8 @@ URL = "https://web.ifzq.gtimg.cn/appstock/app/fqkline/get"
 SYMBOL = "sh511010"
 OUT = os.path.join(BASE, "daily_CN_511010.csv")
 START_DATE = "2013-08-01"
-END_DATE = "2026-08-18"
+# 默认拉取到今天 (GitHub Actions 每日自动更新)
+END_DATE = datetime.now().strftime("%Y-%m-%d")
 
 
 def fetch_batch(end: str, count: int = 800) -> list:

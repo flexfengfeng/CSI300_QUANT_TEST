@@ -35,7 +35,8 @@ def fetch_batch(end: str, count: int = 800) -> list:
 
 def main():
     rows = {}
-    end = datetime(2026, 8, 18).strftime("%Y-%m-%d")
+    # 默认拉取到今天 (GitHub Actions 每日自动更新)
+    end = datetime.now().strftime("%Y-%m-%d")
     page = 0
     while True:
         page += 1
