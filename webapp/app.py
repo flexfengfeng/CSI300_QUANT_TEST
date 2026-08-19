@@ -148,16 +148,23 @@ def plot_robustness(robust_df: pd.DataFrame):
 def metric_card(st, label, value, delta=None, color: str | None = None,
                 suffix: str = ""):
     """渲染单指标卡片。"""
-    st.markdown(
-        f"""<div style="background:{color or '#f7f8fa'};padding:16px;border-radius:12px;
-            border:1px solid #e3e6ed;margin-bottom:8px">
-            <div style="font-size:13px;color:#6b7280">{label}</div>
-            <div style="font-size:26px;font-weight:700;color:#111827;margin-top:4px">
-                {value}{suffix}</div>
-            {f'<div style="font-size:13px;color:#16a34a;margin-top:2px">{delta}</div>' if delta else ''}
-        </div>""",
-        unsafe_allow_html=True,
+    delta_html = (
+        f'<div style="font-size:13px;color:#16a34a;margin-top:2px">{delta}</div>'
+        if delta else ""
     )
+    # 注意: HTML 必须拼接为单行, 不能包含换行。
+    # 若开始标签被换行拆开, markdown 引擎无法识别整段原始 HTML,
+    # 结尾的 </div> 会被当作纯文本显示出来。
+    html = (
+        f'<div style="background:{color or "#f7f8fa"};padding:16px;'
+        f'border-radius:12px;border:1px solid #e3e6ed;margin-bottom:8px">'
+        f'<div style="font-size:13px;color:#6b7280">{label}</div>'
+        f'<div style="font-size:26px;font-weight:700;color:#111827;margin-top:4px">'
+        f'{value}{suffix}</div>'
+        f'{delta_html}'
+        f'</div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def main():
@@ -229,19 +236,25 @@ def main():
 
     st.markdown("---")
 
-    # ---- 回测表现 ----
+    # ---- 回测表现 (2 行 x 3 列, 保证列宽足够, 平均仓位不被截断) ----
     st.subheader("📈 回测表现")
-    c1, c2, c3, c4, c5, c6 = st.columns(6)
-    c1.metric("CAGR", f"{m['s_cagr']*100:.2f}%",
-              f"沪深300 {m['m_cagr']*100:.2f}%")
-    c2.metric("最大回撤", f"{m['s_mdd']*100:.1f}%",
-              f"沪深300 {m['m_mdd']*100:.1f}%")
-    c3.metric("夏普", f"{m['s_sharpe']:.2f}",
-              f"沪深300 {m['m_sharpe']:.2f}")
-    c4.metric("年化波动", f"{m['s_ann_vol']*100:.1f}%",
-              f"沪深300 {m['m_ann_vol']*100:.1f}%")
-    c5.metric("超额收益", f"{m['excess']*100:+.1f}pp", "vs 沪深300")
-    c6.metric("平均仓位", f"股票{m['avg_stock']*100:.0f}% / 国债{m['avg_bond']*100:.0f}%")
+    r1a, r1b, r1c = st.columns(3)
+    r1a.metric("CAGR", f"{m['s_cagr']*100:.2f}%",
+               f"沪深300 {m['m_cagr']*100:.2f}%")
+    r1b.metric("最大回撤", f"{m['s_mdd']*100:.1f}%",
+               f"沪深300 {m['m_mdd']*100:.1f}%")
+    r1c.metric("夏普", f"{m['s_sharpe']:.2f}",
+               f"沪深300 {m['m_sharpe']:.2f}")
+    r2a, r2b, r2c = st.columns(3)
+    r2a.metric("年化波动", f"{m['s_ann_vol']*100:.1f}%",
+               f"沪深300 {m['m_ann_vol']*100:.1f}%")
+    r2b.metric("超额收益", f"{m['excess']*100:+.1f}pp", "vs 沪深300")
+    # st.metric 单行会在列宽不足时截断 (如 "股票87% / 国债xx%"),
+    # 故平均仓位改用自定义卡片分两行展示, 保证股票/国债比例完整可见。
+    with r2c:
+        metric_card(st, "平均仓位",
+                    f"股票{m['avg_stock']*100:.0f}%<br>国债{m['avg_bond']*100:.0f}%",
+                    color="#f7f8fa")
 
     fig = plot_equity(df)
     if HAS_PLOTLY:
